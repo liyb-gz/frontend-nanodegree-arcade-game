@@ -11,6 +11,8 @@ var COL_OFFSET = 0; //adjust the object's x position so that it shows right in t
 
 var COLLISION_DISTANCE = 10;
 
+
+
 /*****************************
 * Utility functions
 *****************************/
@@ -26,6 +28,8 @@ function col(numCol) {
 function row(numRow) {
     return numRow * ROW + ROW_OFFSET;
 }
+
+
 
 /*****************************
 * Classes
@@ -100,7 +104,6 @@ Enemy.prototype.isCollideWith = function(obj) {
     }
 }
 
-
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -129,6 +132,8 @@ Player.prototype.render = function() {
 // Parameter: key, the key pressed by user
 Player.prototype.handleInput = function(key) {
 
+    //Calculate the key input's effect to the player,
+    //without having to update the player object.
     var resultX = this.x;
     var resultY = this.y;
 
@@ -147,7 +152,6 @@ Player.prototype.handleInput = function(key) {
 
         case 'up':
             resultY -= ROW;
-            break;
     }
 
     // Only execute the move when it will NOT move the character out of canvas
@@ -191,6 +195,8 @@ Player.prototype.willOutOfCanvas = function(x, y) {
 Player.prototype.willOnWater = function(x, y) {
     return y < row(1);
 };
+
+
 
 /*****************************
 * Objects
