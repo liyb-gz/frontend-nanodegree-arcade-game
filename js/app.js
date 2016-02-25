@@ -1,4 +1,6 @@
-// Constants
+/*****************************
+* Constants
+*****************************/
 var CANVAS_WIDTH = 505;
 var CANVAS_HEIGHT = 606;
 
@@ -7,17 +9,27 @@ var ROW = 83; //height of a grid
 var ROW_OFFSET = -20; //adjust the object's y position so that it shows right in the middle of the grid
 var COL_OFFSET = 0; //adjust the object's x position so that it shows right in the middle of the grid
 
-// Utility functions
+var COLLISION_DISTANCE = 10;
+
+/*****************************
+* Utility functions
+*****************************/
 
 // return the pixel value of a column
-function col(numCols) {
-    return numCols * COL + COL_OFFSET;
+// Parameter: numCol, the number of the indicated column.
+function col(numCol) {
+    return numCol * COL + COL_OFFSET;
 }
 
 // return the pixel value of a row
-function row(numRows) {
-    return numRows * ROW + ROW_OFFSET;
+// Parameter: numRow, the number of the indicated row.
+function row(numRow) {
+    return numRow * ROW + ROW_OFFSET;
 }
+
+/*****************************
+* Classes
+*****************************/
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -27,7 +39,6 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-
     this.reset();
 };
 
@@ -37,6 +48,10 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.isCollideWith(player)) {
+        player.reset();
+    }
+
     if (this.isOutOfCanvas()) {
         this.reset();
     } else {
@@ -70,6 +85,21 @@ Enemy.prototype.reset = function() {
     this.speed = Math.floor(Math.random() * 400) + 100;
 };
 
+// Judge whether enemy collides with the given object (normally the player)
+// Parameter: obj, the object that we need to judge whether it collides with this enemy object
+Enemy.prototype.isCollideWith = function(obj) {
+    var dx = this.x - obj.x;
+    var dy = this.y - obj.y;
+
+    if (Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) < COLLISION_DISTANCE) {
+        //Collided
+        return true;
+    } else {
+        //Not collided
+        return false;
+    }
+}
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -79,19 +109,24 @@ var Player = function() {
     this.reset();
 };
 
+// Update the player's position, required method for game
+// Parameter: dt, a time delta between ticks
 Player.prototype.update = function(dt) {
     // I have no idea what this method need to do.
     // Player has no arguments that are changed over time
 
     // Maybe if one want to make fancy effects (character animations etc)
     // This method will be useful.
+    // For example the character is dancing
 };
 
-// Draw the player on the screen
+// Draw the player on the screen, required method for game
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Respond to the keyboard input
+// Parameter: key, the key pressed by user
 Player.prototype.handleInput = function(key) {
 
     var resultX = this.x;
@@ -116,15 +151,15 @@ Player.prototype.handleInput = function(key) {
     }
 
     // Only execute the move when it will NOT move the character out of canvas
-    if(!this.willOutOfCanvas(resultX, resultY)) {
-        if(this.willOnWater(resultX, resultY)) {
-            // The key press will move the character on the water
+    if (!this.willOutOfCanvas(resultX, resultY)) {
+        if (this.willOnWater(resultX, resultY)) {
             // Win state.
+            // The key press will move the character on the water
             // The requirement is only to reset the character to the initial position.
             // But it can be fancier.
             this.reset();
         } else {
-            // Normal state
+            // Normal state.
             // Neither out of canvas, nor win
             // Simply execute the move
             this.x = resultX;
@@ -137,7 +172,7 @@ Player.prototype.handleInput = function(key) {
 Player.prototype.reset = function() {
     this.x = col(2);
     this.y = row(5);
-}
+};
 
 // Judge if the given x and y will move the player out of canvas
 Player.prototype.willOutOfCanvas = function(x, y) {
@@ -148,15 +183,18 @@ Player.prototype.willOutOfCanvas = function(x, y) {
     } else {
         return false;
     }
-}
+};
 
 // Judge if the given x and y will move the player on the water
 // Currently this function needs y only
 // But for consistency and future extension, it is set to require the x anyway.
 Player.prototype.willOnWater = function(x, y) {
     return y < row(1);
-}
+};
 
+/*****************************
+* Objects
+*****************************/
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
