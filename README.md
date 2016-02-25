@@ -1,5 +1,4 @@
 #Arcade Game
----
 
 ## Introduction
 This is a game about a hero who will later save the world and the entire humanity. But before his adventure officially starts, he need to get to the river without being bitten by the bugs. Help this hero to get to the river, and avoid the bugs!
@@ -24,3 +23,13 @@ The **bugs**! They are evil, poisonous and they bite! Don't touch them or the he
 
 ## How to win
 Use the arrow keys to help the hero to get to the riverside at all cost, but without hitting any bugs! And after successfully doing so, the game will restart and allow you to try again, and again, and again, and again! Isn't that exciting and wonderful?!
+
+## Trouble shooting
+
+###I opened the index file, but it is showing source code only.
+Make sure you didn't open it directly on GitHub. Download the game to your computer first, and open the local version of the **index.html** file.
+
+###I downloaded the game, opened the index file, but the page is blank and the game is still not running.  
+Make sure you have downloaded the whole folder (with **index.html**, the **css** folder, the **images** folder, and the **js** folder), instead of the **index.html** file only.
+
+
